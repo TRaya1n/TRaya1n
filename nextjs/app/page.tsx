@@ -1,38 +1,29 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import { SparklesCore } from "@/components/ui/sparkles";
-import { FloatingNav } from '@/components/ui/floating-navbar';
-import { IconUser } from "@tabler/icons-react";
+import { HoveredLink, Menu, MenuItem, ProductItem } from '@/components/ui/navbar-menu';
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import { TypewriterEffectSmooth } from '@/components/ui/typewriter-effect';
-import { Meteors } from '@/components/ui/meteors'
+import { cn } from "@/lib/utils";
 
 
 export default function Page() {
-  const items = [
-    {
-      name: 'Github',
-      link: 'https://github.com/TRaya1n',
-      icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />
-    }
-  ];
-
   return (
     <main>
-    <div className="relative w-full">
-      <FloatingNav navItems={items}/>
+      <div className="relative w-full flex items-center justify-center">
+      <Navbar className="top-2" />
     </div>
 
-    <div className="h-[40rem] relative w-full bg-black flex flex col items-center justify-center overflow-hidden rounded-md">
-      <div className="w-full absolute inset-0 h-screen">
-        <SparklesCore
+      <div className="h-[40rem] relative w-full bg-black flex col items-center justify-center overflow-hidden rounded-md">
+        <div className="w-full absolute inset-0 h-screen">
+          <SparklesCore
           id="tsparticlesfullpage"
           background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={100}
+          minSize={1.4}
+          maxSize={2.6}
+          particleDensity={50}
           className="w-full h-full"
           particleColor="#FFFFFF"
         />
@@ -47,46 +38,7 @@ export default function Page() {
           { text: 'n' }
         ]}/>
       </h1>
-
-      <div className="relative max-w-xs">
-        <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-[0.80] bg-red-500 rounded-full blur-3xl" />
-        <div className="relative shadow-xl bg-gray-900 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-end items-start">
-          <div className="h-5 w-5 rounded-full border flex items-center justify-center mb-4 border-gray-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="h-2 w-2 text-gray-300"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 4.5l15 15m0 0V8.25m0 11.25H8.25"
-              />
-            </svg>
-          </div>
- 
-          <h1 className="font-bold text-xl text-white mb-4 relative z-50">
-            Meteors because they&apos;re cool
-          </h1>
- 
-          <p className="font-normal text-base text-slate-500 mb-4 relative z-50">
-            I don&apos;t know what to write so I&apos;ll just paste something
-            cool here. One more sentence because lorem ipsum is just
-            unacceptable. Won&apos;t ChatGPT the shit out of this.
-          </p>
- 
-          <button className="border px-4 py-1 rounded-lg  border-gray-500 text-gray-300">
-            Explore
-          </button>
- 
-          {/* Meaty part - Meteor effect */}
-          <Meteors number={20} />
-        </div>
       </div>
-    </div>
 
     <TracingBeam className="px-6">
       <div className="max-w-2xl mx-auto antialiased pt-4 relative">
@@ -135,3 +87,30 @@ const content = [
     description: 'Disinvite is a Discord Guild advertiser (like disboard) made using Nextjs.'
   }
 ]
+
+function Navbar({ className }: { className?: string }) {
+  const [active, setActive] = useState<string | null>(null);
+  return (
+    <div
+      className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}
+    >
+      <Menu setActive={setActive}>
+        <MenuItem setActive={setActive} active={active} item="Services">
+          <div className="flex flex-covl space-y-4 text-sm">
+            <HoveredLink href="/serv/d">Discord Bot</HoveredLink>
+          </div>
+        </MenuItem>
+        <MenuItem setActive={setActive} active={active} item="Projects">
+          <div className="  text-sm grid grid-cols-2 gap-10 p-4">
+            <ProductItem
+              title="Wooki"
+              href="https://github.com/TRaya1n/TRaya1n/tree/main/nextjs"
+              src="https://cdn.discordapp.com/attachments/713496989555490886/1212574194835922954/a83a2f4d5f1860b404371394b87b75c7.jpg?ex=65f254b8&is=65dfdfb8&hm=c02dfd96012cda7bb80e9d706b5cd15ddd26dd1b03f639738586b984c34a0d4f&"
+              description="Wookie is a general purpose Discord Bot."
+            />
+          </div>
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+}
